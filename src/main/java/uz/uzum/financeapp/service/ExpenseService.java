@@ -4,7 +4,7 @@ package uz.uzum.financeapp.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uz.uzum.financeapp.model.Expense;
-import uz.uzum.financeapp.model.ExpenseDto;
+import uz.uzum.financeapp.dto.ExpenseDto;
 import uz.uzum.financeapp.repository.ExpenseRepository;
 
 import java.math.BigDecimal;

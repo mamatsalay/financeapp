@@ -1,4 +1,4 @@
-package uz.uzum.financeapp.model;
+package uz.uzum.financeapp.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

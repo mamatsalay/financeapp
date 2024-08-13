@@ -4,7 +4,7 @@ package uz.uzum.financeapp.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uz.uzum.financeapp.model.ExpenseDto;
+import uz.uzum.financeapp.dto.ExpenseDto;
 import uz.uzum.financeapp.service.ExpenseService;
 
 import java.time.LocalDate;
