@@ -22,6 +22,10 @@ public class Expense {
     private BigDecimal amount;
     private LocalDate date;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "userInfo", nullable = false, unique = true)
+    private UserInfo userInfo;
+
     public Expense(BigDecimal amount, String description, LocalDate date) {
         this.amount = amount;
         this.description = description;

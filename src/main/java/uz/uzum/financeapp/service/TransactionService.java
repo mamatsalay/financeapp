@@ -22,6 +22,15 @@ public class TransactionService {
     public BigDecimal calculateNetBalanceBetweenDates(LocalDate startDate, LocalDate endDate) {
         BigDecimal totalIncome = incomeService.calculateTotalIncomeBetweenDates(startDate, endDate);
         BigDecimal totalExpenses = expenseService.calculateTotalExpensesBetweenDates(startDate, endDate);
-        return totalIncome.add(totalExpenses);
+        BigDecimal netBalance = totalIncome.subtract(totalExpenses);
+        return netBalance;
+    }
+
+    public BigDecimal calculateNetBalanceAfterTax(LocalDate startDate, LocalDate endDate, BigDecimal tax) {
+        BigDecimal totalIncome = incomeService.calculateTotalIncomeBetweenDates(startDate, endDate);
+        BigDecimal totalExpenses = expenseService.calculateTotalExpensesBetweenDates(startDate, endDate);
+        BigDecimal netBalance = totalIncome.subtract(totalExpenses);
+        netBalance = netBalance.multiply(tax);
+        return netBalance;
     }
 }

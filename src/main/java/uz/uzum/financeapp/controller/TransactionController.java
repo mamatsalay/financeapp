@@ -1,6 +1,8 @@
 // src/main/java/com/example/expensemanager/controller/TransactionController.java
 package uz.uzum.financeapp.controller;
 
+import org.springframework.http.ResponseEntity;
+import uz.uzum.financeapp.dto.TaxDto;
 import uz.uzum.financeapp.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,4 +28,14 @@ public class TransactionController {
         LocalDate end = LocalDate.parse(endDate);
         return transactionService.calculateNetBalanceBetweenDates(start, end);
     }
+
+    @GetMapping
+    public ResponseEntity<?> getAfterTax(@RequestBody TaxDto taxDto){
+        return ResponseEntity.ok(transactionService.
+                calculateNetBalanceAfterTax(taxDto.getStart(),
+                                            taxDto.getEnd(),
+                                            taxDto.getTaxRate()));
+    }
+
+
 }
