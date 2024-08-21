@@ -23,12 +23,6 @@ public class Expense {
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "userInfo", nullable = false, unique = true)
+    @JoinColumn(name = "userInfo_id", nullable = false)
     private UserInfo userInfo;
-
-    public Expense(BigDecimal amount, String description, LocalDate date) {
-        this.amount = amount;
-        this.description = description;
-        this.date = date;
-    }
 }

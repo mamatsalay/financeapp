@@ -2,81 +2,65 @@ package uz.uzum.financeapp.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import uz.uzum.financeapp.dto.IncomeDto;
+import uz.uzum.financeapp.exception.ResourceNotFoundException;
 import uz.uzum.financeapp.model.Income;
+import uz.uzum.financeapp.model.UserInfo;
 import uz.uzum.financeapp.repository.IncomeRepository;
+import uz.uzum.financeapp.repository.UserInfoRepository;
+import uz.uzum.financeapp.security.SecurityUtil;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class IncomeService {
 
     private final IncomeRepository incomeRepository;
+    private final UserInfoRepository userInfoRepository;
+    private final SecurityUtil securityUtil;
 
     @Autowired
-    public IncomeService(IncomeRepository incomeRepository) {
+    public IncomeService(IncomeRepository incomeRepository, UserInfoRepository userInfoRepository, SecurityUtil securityUtil) {
         this.incomeRepository = incomeRepository;
+        this.userInfoRepository = userInfoRepository;
+        this.securityUtil = securityUtil;
     }
 
-    public List<IncomeDto> getAllIncomes() {
-        return incomeRepository.findAll().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    public Income createIncome(IncomeDto incomeDto) {
+        UserInfo userInfo = getAuthenticatedUser();
+        Income income = new Income(userInfo, incomeDto.getAmount(), incomeDto.getDescription(), incomeDto.getDate());
+        return incomeRepository.save(income);
     }
 
-    public Optional<IncomeDto> getIncomeById(Long id) {
-        return incomeRepository.findById(id)
-                .map(this::convertToDTO);
-    }
+    public Income updateIncome(Long id ,IncomeDto incomeDto) {
+        Income income = incomeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Income not Found"));
 
-    public IncomeDto addIncome(IncomeDto IncomeDto) {
-        Income income = convertToEntity(IncomeDto);
-        Income savedIncome = incomeRepository.save(income);
-        return convertToDTO(savedIncome);
-    }
-
-    public IncomeDto updateIncome(Long id, IncomeDto IncomeDto) {
-        Income existingIncome = incomeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Income not found with id " + id));
-
-        existingIncome.setAmount(IncomeDto.getAmount());
-        existingIncome.setDescription(IncomeDto.getDescription());
-        existingIncome.setDate(IncomeDto.getDate());
-
-        Income updatedIncome = incomeRepository.save(existingIncome);
-        return convertToDTO(updatedIncome);
+        income.setAmount(incomeDto.getAmount());
+        income.setDescription(incomeDto.getDescription());
+        income.setDate(incomeDto.getDate());
+        return incomeRepository.save(income);
     }
 
     public void deleteIncome(Long id) {
-        Income income = incomeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Income not found with id " + id));
+        Income income = incomeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Income not Found"));
+
+        if(!isAdmin() && !income.getUserInfo().getUsername().equals(securityUtil.getUsernameFromSecurityContext())){
+            throw new AccessDeniedException("You do not have permission to delete this income");
+        }
+
         incomeRepository.delete(income);
     }
 
-    public List<IncomeDto> getIncomesBetweenDates(LocalDate startDate, LocalDate endDate) {
-        return incomeRepository.findAll().stream()
-                .filter(income -> !income.getDate().isBefore(startDate) && !income.getDate().isAfter(endDate))
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    private boolean isAdmin() {
+        return getAuthenticatedUser().getRoles().contains("ADMIN");
     }
 
-    public BigDecimal calculateTotalIncomeBetweenDates(LocalDate startDate, LocalDate endDate) {
-        return incomeRepository.findAll().stream()
-                .filter(income -> !income.getDate().isBefore(startDate) && !income.getDate().isAfter(endDate))
-                .map(Income::getAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    private UserInfo getAuthenticatedUser() {
+        String username = securityUtil.getUsernameFromSecurityContext();
+        return userInfoRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    private Income convertToEntity(IncomeDto IncomeDto) {
-        return new Income(IncomeDto.getAmount(), IncomeDto.getDescription(), IncomeDto.getDate());
-    }
-
-    private IncomeDto convertToDTO(Income income) {
-        return new IncomeDto(income.getAmount(), income.getDescription(), income.getDate());
-    }
 }

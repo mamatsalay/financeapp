@@ -18,17 +18,23 @@ public class Income {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String description;
+    @Column(nullable = false)
     private BigDecimal amount;
+
+    @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = false)
     private LocalDate date;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "user_info_id", nullable = false, unique = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userInfo_id", nullable = false)
     private UserInfo userInfo;
 
-    public Income(BigDecimal amount, String description, LocalDate date) {
-        this.description = description;
+    public Income(UserInfo userInfo, BigDecimal amount, String description, LocalDate date) {
+        this.userInfo = userInfo;
         this.amount = amount;
+        this.description = description;
         this.date = date;
     }
 
