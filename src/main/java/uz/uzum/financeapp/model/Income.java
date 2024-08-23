@@ -1,5 +1,6 @@
 package uz.uzum.financeapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +30,7 @@ public class Income {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userInfo_id", nullable = false)
+    @JsonBackReference
     private UserInfo userInfo;
 
     public Income(UserInfo userInfo, BigDecimal amount, String description, LocalDate date) {

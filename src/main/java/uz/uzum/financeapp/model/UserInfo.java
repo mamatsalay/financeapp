@@ -1,5 +1,7 @@
 package uz.uzum.financeapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +25,7 @@ public class UserInfo {
     private String username;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -31,6 +34,11 @@ public class UserInfo {
     private Set<String> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<Income> incomes;
+
+    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<Expense> expenses;
 
 }
