@@ -15,9 +15,15 @@ import uz.uzum.financeapp.service.UserInfoDetailsService;
 @Configuration
 public class AuthConfig {
 
+    private final UserInfoDetailsService userInfoDetailsService;
+
+    public AuthConfig(UserInfoDetailsService userInfoDetailsService) {
+        this.userInfoDetailsService = userInfoDetailsService;
+    }
+
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserInfoDetailsService(); // Ensure UserInfoDetailsService implements UserDetailsService
+        return userInfoDetailsService; // Ensure UserInfoDetailsService implements UserDetailsService
     }
 
     @Bean

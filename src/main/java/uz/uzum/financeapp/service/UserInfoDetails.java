@@ -7,12 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import uz.uzum.financeapp.model.UserInfo;
 
 import java.util.Collection;
-import java.util.Set;
 import java.util.stream.Collectors;
 
+@Getter
 public class UserInfoDetails implements UserDetails {
 
-    @Getter
     private final UserInfo userInfo;
 
     public UserInfoDetails(UserInfo userInfo) {
@@ -23,11 +22,9 @@ public class UserInfoDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        Set<GrantedAuthority> authorities = userInfo.getRoles().stream()
+        return userInfo.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toSet());
-
-        return authorities;
     }
 
     @Override

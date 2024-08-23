@@ -1,9 +1,7 @@
 package uz.uzum.financeapp.service;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import uz.uzum.financeapp.dto.IncomeDto;
 import uz.uzum.financeapp.exception.InvalidDateRangeException;
@@ -11,7 +9,6 @@ import uz.uzum.financeapp.exception.ResourceNotFoundException;
 import uz.uzum.financeapp.model.Income;
 import uz.uzum.financeapp.model.UserInfo;
 import uz.uzum.financeapp.repository.IncomeRepository;
-import uz.uzum.financeapp.repository.UserInfoRepository;
 import uz.uzum.financeapp.security.SecurityUtil;
 
 import java.time.LocalDate;

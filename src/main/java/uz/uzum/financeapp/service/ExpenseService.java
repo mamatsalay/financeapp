@@ -9,7 +9,6 @@ import uz.uzum.financeapp.exception.ResourceNotFoundException;
 import uz.uzum.financeapp.model.Expense;
 import uz.uzum.financeapp.model.UserInfo;
 import uz.uzum.financeapp.repository.ExpenseRepository;
-import uz.uzum.financeapp.repository.UserInfoRepository;
 import uz.uzum.financeapp.security.SecurityUtil;
 
 import java.time.LocalDate;

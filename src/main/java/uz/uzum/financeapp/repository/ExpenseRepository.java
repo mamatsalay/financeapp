@@ -13,8 +13,6 @@ import java.util.Optional;
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
-    Optional<Expense> findIncomeById(Long id);
-
     @Query("SELECT i FROM Expense i WHERE i.userInfo.username = :username AND i.date BETWEEN :startDate AND :endDate")
     List<Expense> findExpensesByDateRangeAndUser(
             @Param("username") String username,

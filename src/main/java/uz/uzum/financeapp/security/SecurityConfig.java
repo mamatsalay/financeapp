@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import uz.uzum.financeapp.service.UserInfoDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -17,21 +16,17 @@ import uz.uzum.financeapp.service.UserInfoDetailsService;
 public class SecurityConfig {
 
     private final JwtAuthFilter authFilter;
-    private final AuthConfig authConfig;
-    private final UserInfoDetailsService userInfoDetailsService;
 
     @Autowired
-    public SecurityConfig(JwtAuthFilter authFilter, AuthConfig authConfig, UserInfoDetailsService userInfoDetailsService) {
+    public SecurityConfig(JwtAuthFilter authFilter) {
         this.authFilter = authFilter;
-        this.authConfig = authConfig;
-        this.userInfoDetailsService = userInfoDetailsService;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-                .authorizeRequests(auth -> auth
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
