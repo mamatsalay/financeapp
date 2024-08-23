@@ -21,10 +21,9 @@
 
   1. **Clone the repository:**
 
-    ```sh
     git clone https://github.com/mamatsalay/financeapp.git
     cd financeapp
-    ```
+
 2. **Paste the .env file into  match-making folder**
 
     .env file content
