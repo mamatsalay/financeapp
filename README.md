@@ -19,10 +19,12 @@
     </h3>
   </summary>
 
-  1. **Clone the repository:**
+1. **Clone the repository:**
 
+```
     git clone https://github.com/mamatsalay/financeapp.git
     cd financeapp
+```
 
 2. **Paste the .env file into  match-making folder**
 
@@ -50,6 +52,25 @@
     ```
 5. **Link for the application**
 
-   http://localhost/swagger-ui/index.html#/
+   http://localhost:8080/swagger-ui/index.html#/
+
+</details>
+
+## How to Use
+
+<details close>
+  <summary>
+    <h3>
+      Steps   
+    </h3>
+  </summary>
+
+  1. **Register the user**
+
+  2. **Obtain JWT Token**
+
+  3. **Use JWT Token when making request**
+
+  4. **Have Fun, Good Luck :)**
 
 </details>
