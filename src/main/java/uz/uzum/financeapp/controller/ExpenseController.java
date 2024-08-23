@@ -1,5 +1,7 @@
 package uz.uzum.financeapp.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/expenses")
+@SecurityRequirement(name = "Bearer Authentication")
 public class ExpenseController {
     
     private final ExpenseService expenseService;
@@ -22,13 +25,13 @@ public class ExpenseController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Expense> createExpense(@RequestBody ExpenseDto expenseDto) {
+    public ResponseEntity<Expense> createExpense(@Valid @RequestBody ExpenseDto expenseDto) {
         Expense expense = expenseService.createExpense(expenseDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(expense);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Expense> updateExpense(@PathVariable Long id, @RequestBody ExpenseDto expenseDTO) {
+    public ResponseEntity<Expense> updateExpense(@PathVariable Long id, @Valid @RequestBody ExpenseDto expenseDTO) {
         Expense updatedExpense = expenseService.updateExpense(id, expenseDTO);
         return ResponseEntity.ok(updatedExpense);
     }

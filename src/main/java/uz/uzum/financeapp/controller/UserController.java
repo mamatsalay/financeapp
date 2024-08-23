@@ -1,7 +1,9 @@
 package uz.uzum.financeapp.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import uz.uzum.financeapp.dto.AuthRequestDto;
 import uz.uzum.financeapp.dto.AuthResponseDto;
 import uz.uzum.financeapp.dto.RegRequestDto;
@@ -10,6 +12,7 @@ import uz.uzum.financeapp.service.UserService;
 
 @RestController
 @RequestMapping("/api/auth")
+@Validated
 public class UserController {
 
     private final UserService userService;
@@ -19,7 +22,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegRequestDto regRequestDto) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegRequestDto regRequestDto) {
         try{
             String response = userService.registerUser(regRequestDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -29,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody AuthRequestDto authRequestDto) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody AuthRequestDto authRequestDto) {
         AuthResponseDto authResponseDto = userService.authenticateUser(authRequestDto);
         return ResponseEntity.ok(authResponseDto);
     }

@@ -44,29 +44,23 @@ public class TransactionService {
         return totalIncome.subtract(totalExpense).setScale(2, RoundingMode.HALF_UP);
     }
 
-    /**
-     * Calculate the after-tax profit based on the net balance.
-     *
-     * @param netBalance the net balance before tax
-     * @param taxRate    the tax rate to apply (e.g., 0.2 for 20%)
-     * @return the after-tax profit as BigDecimal
-     */
     public BigDecimal calculateAfterTaxProfit(BigDecimal netBalance, BigDecimal taxRate) {
         BigDecimal taxAmount = netBalance.multiply(taxRate);
         return netBalance.subtract(taxAmount).setScale(2, RoundingMode.HALF_UP);
     }
 
-    /**
-     * Get the after-tax profit for a user within the specified date range.
-     *
-     * @param startDate the start date of the range
-     * @param endDate   the end date of the range
-     * @param taxRate   the tax rate to apply (e.g., 0.2 for 20%)
-     * @return the after-tax profit as BigDecimal
-     */
     public BigDecimal getAfterTaxProfit(LocalDate startDate, LocalDate endDate, BigDecimal taxRate) {
         BigDecimal netBalance = calculateNetBalance(startDate, endDate);
         return calculateAfterTaxProfit(netBalance, taxRate);
+    }
+
+    public BigDecimal calculateTaxAmount(BigDecimal netBalance, BigDecimal taxRate) {
+        return netBalance.multiply(taxRate).setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getTaxAmount(LocalDate startDate, LocalDate endDate, BigDecimal taxRate) {
+        BigDecimal netBalance = calculateNetBalance(startDate, endDate);
+        return calculateTaxAmount(netBalance, taxRate);
     }
 
 }

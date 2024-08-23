@@ -1,6 +1,8 @@
 package uz.uzum.financeapp.controller;
 
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,8 @@ import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/transactions")
+@SecurityRequirement(name = "Bearer Authentication")
+@Tag(name = "Transactions", description = "Operations related with net balance and after tax calc")
 public class TransactionController {
 
     private final TransactionService transactionService;
@@ -41,6 +45,16 @@ public class TransactionController {
 
         BigDecimal afterTaxProfit = transactionService.getAfterTaxProfit(startDate, endDate, taxRate);
         return ResponseEntity.ok(afterTaxProfit);
+    }
+
+    @GetMapping("/tax-amount")
+    public ResponseEntity<BigDecimal> getTaxAmount(
+            @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam("taxRate") BigDecimal taxRate) {
+
+        BigDecimal taxAmount = transactionService.getTaxAmount(startDate, endDate, taxRate);
+        return ResponseEntity.ok(taxAmount);
     }
 
 }
