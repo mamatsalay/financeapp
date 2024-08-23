@@ -9,6 +9,7 @@
 - Spring Data JPA
 - JWT API
 - SWAGGER
+- Maven
 
 ## How to Start
 
