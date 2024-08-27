@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:16.3
+    restart: "no"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: mamatsalay
+      POSTGRES_PASSWORD: 12345678
+      POSTGRES_DB: financeDB
+  financeapp:
+    image: financeapp:latest
+    build: .
+    restart: "no"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/financedb
+      SPRING_DATASOURCE_USERNAME: mamatsalay
+      SPRING_DATASOURCE_PASSWORD: 12345678
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+volumes:
+  postgres_data:
