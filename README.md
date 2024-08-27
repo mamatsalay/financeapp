@@ -2,7 +2,7 @@
 
 ## Dependecies
 
-- Java 21+
+- Java 21+ 
 - Spring Boot 3.3.2
 - Spring Security 6.3.1
 - PostgreSQL 16+
@@ -10,6 +10,8 @@
 - JWT API
 - SWAGGER
 - Maven
+- Docker
+- Flyway
 
 ## How to Start
 
@@ -54,6 +56,51 @@
 5. **Link for the application**
 
    http://localhost:8080/swagger-ui/index.html#/
+
+</details>
+
+<details close>
+  <summary>
+    <h3>
+      Docker    
+    </h3>
+  </summary>
+
+1. **Pull the needed images**
+
+Firstly you need to pull all the needed images from docker hub
+
+Command to pull the database:
+```shell
+docker pull postgres
+```
+
+###
+
+Command to pull the application:
+```shell
+docker pull mamatsalayy/dockerhub:financeapp
+```
+
+2. **Run the images**
+
+After pulling the images you will need to run the images with following commands
+
+PostgreSQL run command:
+```shell
+docker run -p <YOUR-PORT>:5432 -e POSTGRES_USER=<YOUR-DB-USERNAME> -e POSTGRES_PASSWORD=<YOUR-DB-PASSWORD> -
+e POSTGRES_DB=<YOUR-DB-NAME> postgres
+```
+
+Financeapp run command:
+```shell
+docker run -p 8080:8080 -e SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:<YOUR-PORT>/<YOUR-DB-NAME> -e SPRING_DATASOURCE_USERNAME=<YOUR-DB-USERNAME> -
+e SPRING_DATASOURCE_PASSWORD=<YOUR-DB-PASSWORD> financeapp
+```
+
+3. **Link to use the application**
+
+http://localhost:8080/swagger-ui/index.html#/
 
 </details>
 
